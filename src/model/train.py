@@ -3,6 +3,8 @@
 import argparse
 import glob
 import os
+import mlflow
+import mlflow.sklearn
 
 import pandas as pd
 
@@ -12,7 +14,7 @@ from sklearn.linear_model import LogisticRegression
 # define functions
 def main(args):
     # TO DO: enable autologging
-
+    mlflow.sklearn.autolog()
 
     # read data
     df = get_csvs_df(args.training_data)
@@ -34,11 +36,26 @@ def get_csvs_df(path):
 
 
 # TO DO: add function to split data
+def split_data(df):
+    # Splitting the data into features (X) and target variable (y)
+    X = df.drop(columns=["target"])  # Assuming the target variable column is named "target"
+    y = df["target"]
+
+    # Splitting the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    return X_train, X_test, y_train, y_test
 
 
 def train_model(reg_rate, X_train, X_test, y_train, y_test):
     # train model
-    LogisticRegression(C=1/reg_rate, solver="liblinear").fit(X_train, y_train)
+    # LogisticRegression(C=1/reg_rate, solver="liblinear").fit(X_train, y_train)
+    # Train model
+    model = LogisticRegression(C=1/reg_rate, solver="liblinear")
+    model.fit(X_train, y_train)
+
+    # Log the trained model
+    mlflow.sklearn.log_model(model, "model")
 
 
 def parse_args():

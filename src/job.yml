@@ -7,9 +7,9 @@ command: >-
 inputs:
   training_data: 
     type: uri_folder 
-    path: https://github.com/SMITJYOTI/mslearn-mlops/tree/main/experimentation/data
+    path: https://github.com/SMITJYOTI/mslearn-mlops
   reg_rate: 0.01
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:aml-walgreens
+compute: aml-walgreens
 experiment_name: my-experiment
 description: AML pipeline for training and deployment

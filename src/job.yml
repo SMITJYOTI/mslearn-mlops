@@ -1,15 +1,15 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: model
 command: >-
-  python 
-  --
-  --
+  python train.py
+  --input-data ${{ inputs.training_data }}
+  --reg-rate ${{ inputs.reg_rate }}
 inputs:
   training_data: 
     type: uri_folder 
-    path: 
+    path: https://github.com/SMITJYOTI/mslearn-mlops/tree/main/experimentation/data
   reg_rate: 0.01
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: 
-experiment_name: 
-description: 
+compute: azureml:aml-walgreens
+experiment_name: my-experiment
+description: AML pipeline for training and deployment
